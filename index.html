@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apotheke am Markt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --green:#1b7a4d;
+    --green-light:#e6f3ea;
+    --ink:#16241c;
+    --ink-dim:#5e6e64;
+    --line:#e1ebe4;
+    --cross:#e0483a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:20px 28px;max-width:1140px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.25rem;}
+  .cross{width:26px;height:26px;background:var(--cross);position:relative;border-radius:5px;}
+  .cross::before,.cross::after{content:"";position:absolute;background:#fff;}
+  .cross::before{width:14px;height:4px;top:11px;left:6px;}
+  .cross::after{width:4px;height:14px;left:11px;top:6px;}
+  nav ul{display:flex;gap:30px;list-style:none;font-size:.92rem;}
+  nav ul li a:hover{color:var(--green);}
+  .nav-cta{background:var(--green);color:#fff;padding:11px 22px;border-radius:8px;font-size:.85rem;font-weight:500;}
+  .nav-cta:hover{background:#155f3d;}
+  @media(max-width:780px){nav ul{display:none;}}
+
+  .hero{padding:30px 0 80px;}
+  .hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
+  @media(max-width:880px){.hero .wrap{grid-template-columns:1fr;}}
+  .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:16px;font-weight:600;}
+  .hero h1{font-size:clamp(2.3rem,4.8vw,3.4rem);line-height:1.15;margin-bottom:20px;font-weight:600;}
+  .hero p{color:var(--ink-dim);max-width:440px;margin-bottom:30px;}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{display:inline-block;padding:14px 26px;border-radius:8px;font-size:.9rem;font-weight:500;}
+  .btn-fill{background:var(--green);color:#fff;}
+  .btn-fill:hover{background:#155f3d;}
+  .btn-outline{border:1.5px solid var(--green);color:var(--green);}
+  .btn-outline:hover{background:var(--green);color:#fff;}
+
+  .hero-visual{aspect-ratio:4/3;border-radius:20px;background:linear-gradient(150deg,var(--green-light),#bfe2cd);position:relative;}
+
+  .badge{position:absolute;bottom:24px;left:24px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 12px 30px rgba(27,122,77,.18);font-size:.85rem;}
+  .badge strong{display:block;color:var(--green);font-family:'Space Grotesk',sans-serif;}
+
+  section{padding:80px 0;}
+  .section-head{text-align:center;max-width:580px;margin:0 auto 50px;}
+  .section-head h2{font-size:clamp(1.9rem,4vw,2.5rem);}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:880px){.grid-cards{grid-template-columns:repeat(2,1fr);}}
+  .card{background:var(--green-light);border-radius:14px;padding:26px;}
+  .card h3{font-size:1.05rem;margin-bottom:8px;}
+  .card p{color:var(--ink-dim);font-size:.85rem;}
+
+  .info-strip{background:var(--green);color:#fff;border-radius:20px;padding:50px 40px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;}
+  @media(max-width:780px){.info-strip{grid-template-columns:1fr;}}
+  .info-strip h3{font-size:1.1rem;margin-bottom:8px;}
+  .info-strip p{font-size:.88rem;opacity:.9;}
+
+  footer{padding:60px 0 40px;text-align:center;border-top:1px solid var(--line);}
+  footer p{color:var(--ink-dim);font-size:.85rem;margin-top:10px;}
+
+  #chat-toggle{position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:var(--green);color:#fff;border:none;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 10px 26px rgba(27,122,77,.35);}
+  #chat-box{position:fixed;bottom:96px;right:24px;width:340px;max-width:90vw;height:440px;background:#fff;border-radius:14px;display:none;flex-direction:column;overflow:hidden;z-index:100;box-shadow:0 20px 50px rgba(22,36,28,.2);border:1px solid var(--line);}
+  #chat-box.open{display:flex;}
+  #chat-head{padding:16px 18px;border-bottom:1px solid var(--line);font-family:'Space Grotesk',sans-serif;}
+  #chat-head span{color:var(--green);}
+  #chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;font-size:.88rem;}
+  .msg{padding:10px 14px;border-radius:10px;max-width:85%;}
+  .msg.bot{background:var(--green-light);align-self:flex-start;}
+  .msg.user{background:var(--green);color:#fff;align-self:flex-end;}
+  #chat-input-row{display:flex;border-top:1px solid var(--line);}
+  #chat-input{flex:1;background:transparent;border:none;color:var(--ink);padding:14px;font-family:inherit;font-size:.88rem;outline:none;}
+  #chat-send{background:none;border:none;color:var(--green);padding:0 16px;cursor:pointer;font-size:1rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><div class="cross"></div>Apotheke am Markt</div>
+    <ul>
+      <li><a href="#angebot">Angebot</a></li>
+      <li><a href="#service">Service</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <a href="#kontakt" class="nav-cta">Rezept einlösen</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Apotheke</div>
+      <h1>Ihre Gesundheit, kompetent beraten.</h1>
+      <p>Rezeptfreie & rezeptpflichtige Medikamente, persönliche Beratung und schnelle Bestellung — direkt vor Ort oder online.</p>
+      <div class="btn-row">
+        <a href="#kontakt" class="btn btn-fill">Rezept einlösen</a>
+        <a href="#angebot" class="btn btn-outline">Unser Angebot</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="badge"><strong>Notdienst</strong>24h erreichbar</div>
+    </div>
+  </div>
+</section>
+
+<section id="angebot">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Angebot</div>
+      <h2>Mehr als nur Medikamente</h2>
+    </div>
+    <div class="grid-cards">
+      <div class="card"><h3>Rezeptbelieferung</h3><p>Schnell & zuverlässig, auch zur Abholung vorbestellbar.</p></div>
+      <div class="card"><h3>Impfberatung</h3><p>Reise- und Grippeimpfungen direkt in der Apotheke.</p></div>
+      <div class="card"><h3>Hautberatung</h3><p>Individuelle Pflegeempfehlungen für jeden Hauttyp.</p></div>
+      <div class="card"><h3>Nahrungsergänzung</h3><p>Geprüfte Produkte für Vitalität und Wohlbefinden.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="service">
+  <div class="wrap">
+    <div class="info-strip">
+      <div><h3>Öffnungszeiten</h3><p>Mo–Fr 08:00–19:00 · Sa 09:00–14:00</p></div>
+      <div><h3>Botendienst</h3><p>Lieferung nach Hause noch am selben Tag.</p></div>
+      <div><h3>Notdienst</h3><p>Rund um die Uhr erreichbar in dringenden Fällen.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer id="kontakt">
+  <div class="logo" style="justify-content:center"><div class="cross"></div>Apotheke am Markt</div>
+  <p>Marktplatz 3, 70173 Stuttgart · 0711 222 3344 · info@apotheke-am-markt.de</p>
+</footer>
+
+<button id="chat-toggle" onclick="toggleChat()">💬</button>
+<div id="chat-box">
+  <div id="chat-head">Frag <span>Apotheke am Markt</span></div>
+  <div id="chat-msgs"><div class="msg bot">Hallo! Fragen zu Öffnungszeiten, Rezepten oder Produkten? Ich helfe gerne weiter.</div></div>
+  <div id="chat-input-row">
+    <input id="chat-input" placeholder="Nachricht schreiben..." onkeypress="if(event.key==='Enter')sendMsg()">
+    <button id="chat-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<script>
+function toggleChat(){document.getElementById('chat-box').classList.toggle('open');}
+async function sendMsg(){
+  const input=document.getElementById('chat-input');
+  const msgs=document.getElementById('chat-msgs');
+  const text=input.value.trim();
+  if(!text)return;
+  msgs.innerHTML+=`<div class="msg user">${text}</div>`;
+  input.value='';
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const res=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,business:'Apotheke'})});
+    const data=await res.json();
+    msgs.innerHTML+=`<div class="msg bot">${data.reply||'Danke für Ihre Nachricht! Wir melden uns.'}</div>`;
+  }catch(e){
+    msgs.innerHTML+=`<div class="msg bot">Danke für Ihre Nachricht! Wir melden uns zeitnah.</div>`;
+  }
+  msgs.scrollTop=msgs.scrollHeight;
+}
+</script>
+</body>
+</html>
